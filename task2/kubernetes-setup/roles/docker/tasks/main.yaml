@@ -1,0 +1,59 @@
+---
+
+- name: Install packages that allow apt to be used over HTTPS
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-agent
+    - software-properties-common
+
+- name: Add an apt signing key for Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add apt docker repository for stable version
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    state: present
+
+- name: Install docker and its dependecies
+  apt: 
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+    - docker-ce 
+    - docker-ce-cli 
+    - containerd.io
+  notify:
+    - docker status
+
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    group: docker
+
+# - name: Ensure Docker service is installed and restarted
+#   become: yes
+#   service:
+#     name: docker
+#     state: restarted
+#     enabled: yes
+
+# - name: Install Docker Compose (if configured).
+#   become: yes
+#   get_url:
+#     url: https://github.com/docker/compose/releases/download/1.13.0/docker-compose-Linux-x86_64
+#     dest: /usr/local/bin/docker-compose
+#     mode: 0755
+
+
+
