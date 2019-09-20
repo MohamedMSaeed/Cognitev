@@ -39,12 +39,6 @@
   become: yes
   command: touch /etc/default/kubelet
 
-- name: setup
-  setup:
-  register: allfacts
-- debug:
-    var: ansible_all_ipv4_addresses
-
 - name: Configure node ip
   become: yes
   lineinfile:
