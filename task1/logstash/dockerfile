@@ -1,0 +1,5 @@
+FROM docker.elastic.co/logstash/logstash:7.2.0
+
+ADD config/logstash.yml /usr/share/logstash/config/logstash.yml
+RUN rm -r /usr/share/logstash/pipeline
+COPY pipeline /usr/share/logstash/pipeline
