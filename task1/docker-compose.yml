@@ -1,0 +1,48 @@
+version: '3.4'
+
+services:
+  webServer:
+    image: nginx
+    ports:
+      - "9999:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+      - nginx_logs:/var/log/nginx/
+      - ./config/conf.d:/etc/nginx/conf.d
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    environment:
+      - discovery.type=single-node
+    ports: ['9200:9200']
+    volumes:
+      - 'es_data:/usr/share/elasticsearch/data'
+
+  kibana:
+    build: 
+      context: ./kibana
+    ports: ['5601:5601']
+    depends_on: ['elasticsearch']
+
+  logstash:
+    build: 
+      context: ./logstash
+    ports: 
+      - '9600:9600'
+      - '5044:5044'
+    depends_on: ['elasticsearch']
+    volumes:
+      - nginx_logs:/var/log/nginx/
+
+  filebeat:
+    build: 
+      context: ./filebeat
+    depends_on: ['elasticsearch', 'kibana', 'logstash']
+    volumes:
+      - nginx_logs:/var/log/nginx/
+  #   command: --strict.perms=false -e  # -e flag to log to stderr and disable syslog/file output
+
+volumes:
+  es_data:
+  nginx_logs:
