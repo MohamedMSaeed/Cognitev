@@ -1,0 +1,29 @@
+IMAGE_NAME = "bento/ubuntu-16.04"
+N = 2
+
+Vagrant.configure("2") do |config|
+    my_ssh_key = `cat $HOME/.ssh/id_rsa.pub`
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 2048
+        v.cpus = 2
+    end
+      
+    config.vm.define "k8s-master" do |master|
+        master.vm.provision :shell, :path => "user.sh", :args => "#{my_ssh_key}"
+        master.vm.box = IMAGE_NAME
+        master.vm.network "private_network", ip: "192.168.50.10"
+        master.vm.hostname = "k8s-master"
+        puts "\n\n\nIP will be \e[36m192.168.50.10\e[0m\n\n\n"
+    end
+
+    (1..N).each do |i|
+        config.vm.define "node-#{i}" do |node|
+            node.vm.provision :shell, :path => "user.sh", :args => "#{my_ssh_key}"
+            node.vm.box = IMAGE_NAME
+            node.vm.network "private_network", ip: "192.168.50.#{i + 10}"
+            node.vm.hostname = "node-#{i}"
+            puts "\n\n\nIP will be \e[36m192.168.50.#{i + 10}\e[0m\n\n\n"
+        end
+    end
+end
