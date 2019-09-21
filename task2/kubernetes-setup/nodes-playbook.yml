@@ -1,0 +1,11 @@
+---
+- name: a play that runs entirely on the ansible host
+  hosts: all
+  become: true
+  roles:
+    - docker
+    - k8s_common
+    - k8s_nodes
+  handlers:
+    - name: docker status
+      service: name=docker state=started
