@@ -29,8 +29,7 @@ Provisioning the infrastructure may be done via diffrent ways. In this demo I wi
 
 - make sure that you are at the same directory where "vagrant file" is and run ```vagrant up```
 
-- This will create 3 VMs of '2G RAM and 2 CPUs'
-- Configure the master node and install all dependecies
+- This will create 3 VMs of '2G RAM and 2 CPUs' and configure the master node and install all dependecies
 
 
 #### Run the deployment and service file:
