@@ -14,29 +14,35 @@ This folder contains:
 
 
 
-## Steps 
+## Note 
 
 Provisioning the infrastructure may be done via diffrent ways. In this demo I will use vagrant to create 3 VMs. A Master and 2 Nodes.
 
 ## Configure more nodes:
 
-- Add an entry for each added node in ``` kubernates_setup/hosts ```
-
+- Just edit Vagrantfile change N variable to any number you want.
 
 
 ## How to use:
 
-### 1. Creare the claster:
+#### 1. Creare the claster:
 
 - make sure that you are at the same directory where "vagrant file" is and run ```vagrant up```
 
 - This will create 3 VMs of '2G RAM and 2 CPUs'
+- Configure the master node and install all dependecies
 
-### 2. Configure the master node and install all dependecies
 
-- Navigate to kubernates_setup directory and run the following commands
+#### Run the deployment and service file:
 
+1. Copy the deployment files to the master node.
+2. Run the commands
 ```
-ansible-playbook -i hosts master-playbook.yml
-ansible-playbook -i hosts nodes-playbook.yml
+kubectl apply -f deployments/nginx_deployment.yml
+kubectl apply -f deployments/nginx_service.yml
 ```
+3. You then can access the application using the following URL
+``` 192.168.50.10:30500 ```
+
+4. You then can access Kibana dashboard using the following URL
+``` 192.168.50.10:30501 ```
