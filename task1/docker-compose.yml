@@ -41,7 +41,6 @@ services:
     depends_on: ['elasticsearch', 'kibana', 'logstash']
     volumes:
       - nginx_logs:/var/log/nginx/
-  #   command: --strict.perms=false -e  # -e flag to log to stderr and disable syslog/file output
 
 volumes:
   es_data:

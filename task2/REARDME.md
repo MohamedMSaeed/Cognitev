@@ -1,7 +1,20 @@
 # Task2:
 
 
-# Steps 
+## About:
+
+This folder contains:
+
+1. vagrant file: 
+    - to create VMs that will be used in the kubernetes claster.
+2. kubernetes-setup directory: 
+    - that contains ansible playbooks and roles which will configure the nodes and install the needed independencies.
+3. deployments directory:
+    - includes deployment file to deploy a pod contains all containers and service file to expose the app to the outside.
+
+
+
+## Steps 
 
 Provisioning the infrastructure may be done via diffrent ways. In this demo I will use vagrant to create 3 VMs. A Master and 2 Nodes.
 
